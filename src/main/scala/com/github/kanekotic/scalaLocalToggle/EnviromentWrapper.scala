@@ -1,4 +1,4 @@
-package kanekotic.scalaLocalToggle
+package com.github.kanekotic.scalaLocalToggle
 
 class EnviromentWrapper {
   def get(name : String) : Option[String] = {

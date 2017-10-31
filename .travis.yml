@@ -1,0 +1,10 @@
+language: scala
+
+jdk:
+  - oraclejdk8
+
+script:
+  - sbt test
+
+#after_success:
+#  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt publish; };"

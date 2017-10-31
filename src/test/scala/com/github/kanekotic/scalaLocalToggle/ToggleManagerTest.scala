@@ -1,5 +1,6 @@
-package kanekotic.scalaLocalToggle
+package com.github.kanekotic.scalaLocalToggle
 
+import com.github.kanekotic.scalaLocalToggle.{Toggle, Toggles, toggleManager}
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}

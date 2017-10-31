@@ -1,4 +1,4 @@
-package kanekotic.scalaLocalToggle
+package com.github.kanekotic.scalaLocalToggle
 
 import java.nio.file.Paths
 
