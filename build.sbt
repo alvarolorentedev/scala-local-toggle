@@ -12,13 +12,12 @@ libraryDependencies in ThisBuild ++= Seq(
   "org.mockito" % "mockito-core" % mockitoVersion % Test,
   "com.github.pureconfig" %% "pureconfig" % pureConfigVersion)
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
+publishTo := Some(
   if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
+    Opts.resolver.sonatypeSnapshots
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-}
+    Opts.resolver.sonatypeStaging
+)
 
 credentials += Credentials(
     realm = "Sonatype Nexus Repository Manager",
@@ -27,23 +26,7 @@ credentials += Credentials(
     passwd = System.getenv("NEXUS_DEPLOYMENT_PASSWORD")
   )
 
-pomExtra := (
-  <url>https://github.com/kanekotic/scala-local-toggle</url>
-    <licenses>
-      <license>
-        <name>MIT</name>
-        <url>https://opensource.org/licenses/MIT</url>
-        <distribution>repo</distribution>
-      </license>
-    </licenses>
-    <scm>
-      <url>git@github.com:kanekotic/scala-local-toggle.git</url>
-      <connection>scm:git:git@github.com:kanekotic/scala-local-toggle.git</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>kanekotic</id>
-        <name>Alvaro Perez</name>
-        <url>https://github.com/kanekotic</url>
-      </developer>
-    </developers>)
+useGpg := false
+pgpSecretRing := file("deploy/my-key-sec.asc")
+pgpPublicRing := file("deploy/my-key-pub.asc")
+pgpPassphrase := sys.env.get("GPG_PASS").map(_.toArray)

@@ -3,8 +3,13 @@ language: scala
 jdk:
   - oraclejdk8
 
-script:
-  - sbt test
+before_install:
+  - openssl aes-256-cbc -K $encrypted_ad99d228882c_key -iv $encrypted_ad99d228882c_iv -in ./deploy/something.tar.enc -out ./deploy/something.tar -d
+  - tar xvf ./deploy/something.tar -C ./deploy
 
-#after_success:
-#  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt publish; };"
+script:
+  - sbt clean compile test package
+
+after_success:
+  - sbt publishSigned sonatypeReleaseAll
+
