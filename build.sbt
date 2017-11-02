@@ -36,13 +36,9 @@ releaseProcess := Seq[ReleaseStep](
   runTest,
   releaseStepCommand(s"""sonatypeOpen "${organization.value}" "Scala Local Feature Toggle""""),
   setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
   releaseStepCommand("publishSigned"),
   setNextVersion,
-  commitNextVersion,
-  releaseStepCommand("sonatypeReleaseAll"),
-  pushChanges
+  releaseStepCommand("sonatypeReleaseAll")
 )
 
 useGpg := false
