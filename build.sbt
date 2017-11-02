@@ -1,3 +1,5 @@
+import sbtrelease.ReleaseStateTransformations._
+
 organization := "com.github.kanekotic"
 name := "scala-local-toggle"
 version := Option("0.0." + System.getenv("TRAVIS_BUILD_NUMBER")).getOrElse("1.0-SNAPSHOT")
@@ -28,9 +30,19 @@ credentials += Credentials(
   )
 
 releaseProcess := Seq[ReleaseStep](
-  releaseStepCommand("sonatypeOpen \"com.github.kanekotic\" \"scala-local-toggle\""),
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  releaseStepCommand(s"""sonatypeOpen "${organization.value}" "Scala Local Feature Toggle""""),
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
   releaseStepCommand("publishSigned"),
-  releaseStepCommand("sonatypeRelease")
+  setNextVersion,
+  commitNextVersion,
+  releaseStepCommand("sonatypeReleaseAll"),
+  pushChanges
 )
 
 useGpg := false
