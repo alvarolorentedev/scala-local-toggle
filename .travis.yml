@@ -4,8 +4,8 @@ jdk:
   - oraclejdk8
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_de88d5406e6b_key -iv $encrypted_de88d5406e6b_iv -in deploy/something.tar.enc -out deploy/something.tar -d
-  - tar xvf ./deploy/something.tar -C ./deploy
+  - openssl aes-256-cbc -K $encrypted_de88d5406e6b_key -iv $encrypted_de88d5406e6b_iv -in something.tar.enc -out something.tar -d
+  - tar xvf something.tar
 
 script:
   - sbt clean compile test package
