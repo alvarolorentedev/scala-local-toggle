@@ -11,7 +11,4 @@ script:
   - sbt clean compile test package
 
 after_success:
-  - echo $PWD
-  - ls -la deploy/
-  - sbt publishSigned "sonatypeReleaseAll com.github.kanekotic"
-
+  - sbt release

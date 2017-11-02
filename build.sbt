@@ -27,6 +27,12 @@ credentials += Credentials(
     passwd = System.getenv("NEXUS_DEPLOYMENT_PASSWORD")
   )
 
+releaseProcess := Seq[ReleaseStep](
+  releaseStepCommand("sonatypeOpen \"com.github.kanekotic\" \"scala-local-toggle\""),
+  releaseStepCommand("publishSigned"),
+  releaseStepCommand("sonatypeRelease")
+)
+
 useGpg := false
 pgpSecretRing := file("./deploy/my-key-sec.asc")
 pgpPublicRing := file("./deploy/my-key-pub.asc")

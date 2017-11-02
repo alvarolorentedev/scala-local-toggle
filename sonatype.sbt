@@ -2,6 +2,8 @@ import sbt.url
 
 sonatypeProfileName := "com.github.kanekotic"
 
+pomIncludeRepository := { _ => false }
+
 publishMavenStyle := true
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
