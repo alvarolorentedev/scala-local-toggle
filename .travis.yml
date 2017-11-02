@@ -13,5 +13,5 @@ script:
 after_success:
   - echo $PWD
   - ls -la deploy/
-  - sbt publishSigned sonatypeReleaseAll
+  - sbt publishSigned "sonatypeReleaseAll com.github.kanekotic"
 
