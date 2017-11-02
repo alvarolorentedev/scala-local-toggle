@@ -4,7 +4,7 @@ jdk:
   - oraclejdk8
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_ad99d228882c_key -iv $encrypted_ad99d228882c_iv -in ./deploy/something.tar.enc -out ./deploy/something.tar -d
+  - openssl aes-256-cbc -K $encrypted_de88d5406e6b_key -iv $encrypted_de88d5406e6b_iv -in deploy/something.tar.enc -out deploy/something.tar -d
   - tar xvf ./deploy/something.tar -C ./deploy
 
 script:
