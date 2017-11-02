@@ -12,12 +12,14 @@ libraryDependencies in ThisBuild ++= Seq(
   "org.mockito" % "mockito-core" % mockitoVersion % Test,
   "com.github.pureconfig" %% "pureconfig" % pureConfigVersion)
 
-publishTo := Some(
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
+    Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Opts.resolver.sonatypeStaging
-)
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+
 publishArtifact in Test := false
 
 credentials += Credentials(
