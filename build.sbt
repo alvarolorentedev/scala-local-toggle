@@ -14,19 +14,10 @@ libraryDependencies in ThisBuild ++= Seq(
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  val profileM = sonatypeStagingRepositoryProfile.?.value
-
-  if (isSnapshot.value) {
+  if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
-  } else {
-    val staged = profileM map { stagingRepoProfile =>
-      "releases" at nexus +
-        "service/local/staging/deployByRepositoryId/" +
-        stagingRepoProfile.repositoryId
-    }
-
-    staged.orElse(Some("releases" at nexus + "service/local/staging/deploy/maven2"))
-  }
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
 publishArtifact in Test := false
