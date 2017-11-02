@@ -27,6 +27,6 @@ credentials += Credentials(
   )
 
 useGpg := false
-pgpSecretRing := file("deploy/my-key-sec.asc")
-pgpPublicRing := file("deploy/my-key-pub.asc")
+pgpSecretRing := file("./deploy/my-key-sec.asc")
+pgpPublicRing := file("./deploy/my-key-pub.asc")
 pgpPassphrase := sys.env.get("GPG_PASS").map(_.toArray)
