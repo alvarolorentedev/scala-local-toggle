@@ -1,6 +1,6 @@
 organization := "com.github.kanekotic"
 name := "scala-local-toggle"
-version := Option(System.getenv("TRAVIS_BUILD_NUMBER")).getOrElse("1.0-SNAPSHOT")
+version := Option("0.0." + System.getenv("TRAVIS_BUILD_NUMBER")).getOrElse("1.0-SNAPSHOT")
 scalaVersion in ThisBuild := "2.12.3"
 
 val mockitoVersion          = "2.10.0"
