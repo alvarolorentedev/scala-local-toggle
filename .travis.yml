@@ -8,8 +8,5 @@ before_install:
   - tar xvf something.tar
 
 script:
-  - sbt clean compile test package
-
-after_success:
-  - sbt publishSigned sonatypeReleaseAll
+  - sbt clean compile test package publishSigned sonatypeReleaseAll
 
