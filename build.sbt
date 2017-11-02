@@ -18,6 +18,7 @@ publishTo := Some(
   else
     Opts.resolver.sonatypeStaging
 )
+publishArtifact in Test := false
 
 credentials += Credentials(
     realm = "Sonatype Nexus Repository Manager",

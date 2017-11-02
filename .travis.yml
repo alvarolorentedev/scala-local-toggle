@@ -11,5 +11,6 @@ script:
   - sbt clean compile test package
 
 after_success:
+  - echo $PWD
   - sbt publishSigned sonatypeReleaseAll
 
