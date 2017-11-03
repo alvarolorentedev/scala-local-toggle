@@ -12,15 +12,17 @@ libraryDependencies += "com.github.kanekotic" %% "scala-local-toggle" % "0.0.23"
 
 1. Instantiate can be done by newing the class, it can also be register in guice or dependency injection frameworks.
 ```scala
-  /// Default: will use toggle.conf file in root
-  val toggle = new toggleManager();
-  
-  /// with String: will use the file you declare as toggle
-  
-  val toggle = new toggleManager("./path/to/file.conf");
+  val toggle = new ToggleManager();
 ``` 
+use default files for loading configuration, it will try to load toggles from the following (first-listed are higher priority):
 
-2. Add a `toggle.conf` in the root of your project or file configured in instantiation with a HOCON complient configuration similar to this:
+- system properties
+- application.conf (all resources on classpath with this name)
+- application.json (all resources on classpath with this name)
+- application.properties (all resources on classpath with this name)
+- reference.conf (all resources on classpath with this name)
+
+2. Add a configuration to in the root of your project or file configured in instantiation with a HOCON complient configuration similar to this:
 
 ```hocon
 {

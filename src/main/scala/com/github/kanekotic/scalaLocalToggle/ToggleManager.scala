@@ -1,22 +1,14 @@
 package com.github.kanekotic.scalaLocalToggle
 
-import java.nio.file.Paths
-
 import pureconfig.error.ConfigReaderFailures
-import pureconfig.loadConfigFromFiles
 
 case class Toggle(name: String, production: Boolean)
 case class Toggles(toggles: List[Toggle])
 
-class toggleManager(toggles : Either[ConfigReaderFailures, Toggles], enviromentWrapper: EnviromentWrapper) {
-  def this(path: String)
-  {
-    this(loadConfigFromFiles[Toggles](Seq(Paths.get(path))), new EnviromentWrapper())
-  }
-
+class ToggleManager(toggles : Either[ConfigReaderFailures, Toggles], enviromentWrapper: EnviromentWrapper) {
   def this()
   {
-    this("toggles.conf")
+    this(pureconfig.loadConfig[Toggles], new EnviromentWrapper())
   }
 
   def isEnabled(toggleName : String) : Boolean = {

@@ -19,7 +19,7 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
 
   "is enabled" should "return false in case of error" in {
     val toggleFiles = Left[ConfigReaderFailures,Toggles](error)
-    val manager = new toggleManager(toggleFiles,environment)
+    val manager = new ToggleManager(toggleFiles,environment)
     manager.isEnabled(Faker.RandomString) should be (false)
 
   }
@@ -31,14 +31,14 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
     when(toggle.production).thenReturn(true)
     when(toggles.toggles).thenReturn(toggle :: Nil)
     val toggleFiles = Right[ConfigReaderFailures,Toggles](toggles)
-    val manager = new toggleManager(toggleFiles,environment)
+    val manager = new ToggleManager(toggleFiles,environment)
     manager.isEnabled(toggleName) should be (true)
   }
 
   "is enabled" should "return false in case of non existing" in {
     when(toggles.toggles).thenReturn(Nil)
     val toggleFiles = Right[ConfigReaderFailures,Toggles](toggles)
-    val manager = new toggleManager(toggleFiles,environment)
+    val manager = new ToggleManager(toggleFiles,environment)
     manager.isEnabled(Faker.RandomString) should be (false)
   }
 
@@ -49,7 +49,7 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
     when(toggle.production).thenReturn(false)
     when(toggles.toggles).thenReturn(toggle :: Nil)
     val toggleFiles = Right[ConfigReaderFailures,Toggles](toggles)
-    val manager = new toggleManager(toggleFiles,environment)
+    val manager = new ToggleManager(toggleFiles,environment)
     manager.isEnabled(toggleName) should be (false)
   }
 
@@ -61,7 +61,7 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
     when(toggle.production).thenReturn(true)
     when(toggles.toggles).thenReturn(toggle :: Nil)
     val toggleFiles = Right[ConfigReaderFailures,Toggles](toggles)
-    val manager = new toggleManager(toggleFiles,environment)
+    val manager = new ToggleManager(toggleFiles,environment)
     manager.isEnabled(toggleName) should be (false)
   }
 
