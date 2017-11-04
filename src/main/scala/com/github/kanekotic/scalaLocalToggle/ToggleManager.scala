@@ -9,42 +9,44 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
 
   def this()
   {
-    this(pureconfig.loadConfig[ToggleInfo]("feature.toggles"), new EnvironmentWrapper())
+    this(pureconfig.loadConfig[ToggleInfo](ToggleManager.OptionPath), new EnvironmentWrapper())
   }
 
   def isEnabled(toggleName : String) : Boolean = {
-    if (IsError(toggles))
+    if (IsError())
       return false
     val toggleConfig = toggles.right.get
-    val environment = GetCurrentEnvironment(environmentWrapper, toggleConfig.environment)
-    if(environment.equals(None) || !ToggleActive(toggleConfig.toggles, toggleName,environment.get))
+    val environment = GetCurrentEnvironment(toggleConfig.environment)
+    if(environment.equals(None) || !IsToggleActive(toggleConfig.toggles, toggleName,environment.get))
       return false
     return true
   }
 
-  object IsError extends (Either[Any,Any] => Boolean){
-    override def apply(either: Either[Any, Any]) = {
-      either.isLeft
-    }
+  private[this] def IsError() : Boolean = {
+      toggles.isLeft
   }
 
-  object GetCurrentEnvironment extends ((EnvironmentWrapper, Option[String]) => Option[String]){
-    override def apply(environmentWrapper: EnvironmentWrapper, environment: Option[String]) = {
-      environmentWrapper.get(environment.getOrElse("ENVIRONMENT"))
-    }
+  private[this] def GetCurrentEnvironment(environment: Option[String]) : Option[String] = {
+      environmentWrapper.get(environment.getOrElse(ToggleManager.Environment))
   }
 
-  object ToggleActive extends ((List[Toggle],String,String) => Boolean){
-    override def apply(toggles: List[Toggle], toggleName : String, environmentName: String) = {
+  private[this] def IsToggleActive(toggles: List[Toggle], toggleName : String, environmentName: String) : Boolean = {
       var result = false
       val toggle = toggles collectFirst {case toggle if toggle.name == toggleName => toggle }
       if(!toggle.equals(None))
         environmentName match {
-          case "PRODUCTION" => result = toggle.get.production
-          case "DEVELOPMENT" => result = toggle.get.development
-          case "LOCAL" => result = toggle.get.local
+          case ToggleManager.Production => result = toggle.get.production
+          case ToggleManager.Development => result = toggle.get.development
+          case ToggleManager.Local => result = toggle.get.local
         }
       result
-    }
   }
+}
+
+object ToggleManager {
+  final val OptionPath  ="feature.toggles"
+  final val Environment =  "ENVIRONMENT"
+  final val Production =  "PRODUCTION"
+  final val Development =  "DEVELOPMENT"
+  final val Local =  "LOCAL"
 }
