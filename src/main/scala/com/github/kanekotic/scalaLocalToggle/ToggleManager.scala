@@ -9,7 +9,7 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
 
   def this()
   {
-    this(pureconfig.loadConfig[ToggleInfo], new EnvironmentWrapper())
+    this(pureconfig.loadConfig[ToggleInfo]("feature.toggles"), new EnvironmentWrapper())
   }
 
   def isEnabled(toggleName : String) : Boolean = {
