@@ -44,7 +44,7 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
 }
 
 object ToggleManager {
-  final val OptionPath  ="feature.toggles"
+  final val OptionPath  ="feature.local"
   final val Environment =  "ENVIRONMENT"
   final val Production =  "PRODUCTION"
   final val Development =  "DEVELOPMENT"

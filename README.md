@@ -14,7 +14,8 @@ libraryDependencies += "com.github.kanekotic" %% "scala-local-toggle" % "0.0.23"
 ```scala
   val toggle = new ToggleManager();
 ``` 
-use default files for loading configuration, it will try to load toggles from the following (first-listed are higher priority):
+
+2. use default files for loading configuration, it will try to load toggles from the following (first-listed are higher priority):
 
 - system properties
 - application.conf (all resources on classpath with this name)
@@ -22,24 +23,34 @@ use default files for loading configuration, it will try to load toggles from th
 - application.properties (all resources on classpath with this name)
 - reference.conf (all resources on classpath with this name)
 
-2. Add a configuration to in the root of your project or file configured in instantiation with a HOCON complient configuration similar to this:
+this files will require to have an setting for the toggles HOCON or JSON complient configuration similar to this, in any other case toggles will default to false:
 
 ```hocon
-{
-  "toggles": [
+feature.local.toggles: [
     {
       "name": "NAME_OF_YOUR_TOGGLE",
-      "production": true
+      "local": true
+      "development": true
+      "production": false
     }, 
     {
       "name": "NAME_OF_OTHER_YOUR_TOGGLE",
+      "local": true
+      "development": false
       "production": false
     }
   ]
-}
 ```
+the boolean denotes the state of the toggle depending on the environment, and the name is the identifying the value of the environment variable:
+- local maps to environment variable value LOCAL.
+- development maps to environment variable value DEVELOPMENT.
+- production maps to environment variable value PRODUCTION.
 
-the boolean denotes the state of the toggle depending on the environment, and the name is the identifying name.
+aditionally the enviroment variable that will be track to know the current environment of execution can be modified by
+```hocon
+  feature.local.environment: "SOME_ENVIROMENT_VARIABLE_NAME"
+  #Defaults to ENVIRONMENT 
+``` 
 
 3. Use with the name identifier defined in the previous step
 
