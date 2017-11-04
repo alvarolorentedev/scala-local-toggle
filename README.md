@@ -1,11 +1,15 @@
 # ![logomakr_6etktj](https://user-images.githubusercontent.com/3071208/32364786-318debc0-c077-11e7-9064-a65d6ce35cf6.png)
 
+[![Build Status](https://travis-ci.org/kanekotic/scala-local-toggle.svg?branch=master)](https://travis-ci.org/kanekotic/scala-local-toggle)
+[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.github.kanekotic/scala-local-toggle_2.12/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.kanekotic/scala-local-toggle_2.12/badge.svg?style=flat)
+
+
 feature toggle by configuration file for scala applications
 
 ## Install
-
 ```scala
-libraryDependencies += "com.github.kanekotic" %% "scala-local-toggle" % "0.0.23"
+//Use version in badge
+libraryDependencies += "com.github.kanekotic" %% "scala-local-toggle" % <version>
 ```
 
 ##Use
