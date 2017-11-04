@@ -2,7 +2,7 @@ package com.github.kanekotic.scalaLocalToggle
 
 import pureconfig.error.ConfigReaderFailures
 
-case class Toggle(name: String, production: Boolean)
+case class Toggle(name: String, production: Boolean, development: Boolean, local: Boolean)
 case class ToggleInfo(toggles: List[Toggle], environment: Option[String])
 
 class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environmentWrapper: EnvironmentWrapper) {
@@ -17,7 +17,7 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
       return false
     val toggleConfig = toggles.right.get
     val environment = GetCurrentEnvironment(environmentWrapper, toggleConfig.environment)
-    if(environment.equals(None) || ToggleIsNotActive(toggleConfig.toggles, toggleName,environment.get))
+    if(environment.equals(None) || !ToggleActive(toggleConfig.toggles, toggleName,environment.get))
       return false
     return true
   }
@@ -34,12 +34,16 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
     }
   }
 
-  object ToggleIsNotActive extends ((List[Toggle],String,String) => Boolean){
+  object ToggleActive extends ((List[Toggle],String,String) => Boolean){
     override def apply(toggles: List[Toggle], toggleName : String, environmentName: String) = {
       var result = false
       val toggle = toggles collectFirst {case toggle if toggle.name == toggleName => toggle }
-      if(toggle.equals(None) || !toggle.get.production)
-        result = true
+      if(!toggle.equals(None))
+        environmentName match {
+          case "PRODUCTION" => result = toggle.get.production
+          case "DEVELOPMENT" => result = toggle.get.development
+          case "LOCAL" => result = toggle.get.local
+        }
       result
     }
   }

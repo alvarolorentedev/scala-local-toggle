@@ -21,6 +21,8 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
     toggle = mock[Toggle]
     when(toggle.name).thenReturn(toggleName)
     when(toggle.production).thenReturn(true)
+    when(toggle.development).thenReturn(false)
+    when(toggle.local).thenReturn(false)
 
     togglesInfo = mock[ToggleInfo]
     when(togglesInfo.environment).thenReturn(Some("ENVIRONMENT"))
@@ -66,6 +68,38 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
 
   "is enabled" should  "return false in case of no environment defined" in {
     when(environment.get("ENVIRONMENT")).thenReturn(None)
+    val manager = new ToggleManager(toggleConfig,environment)
+    manager.isEnabled(toggleName) should be (false)
+  }
+
+  "is enabled" should  "return true in case of environment is development and its enable" in {
+    when(environment.get("ENVIRONMENT")).thenReturn(Some("DEVELOPMENT"))
+    when(toggle.production).thenReturn(false)
+    when(toggle.development).thenReturn(true)
+    val manager = new ToggleManager(toggleConfig,environment)
+    manager.isEnabled(toggleName) should be (true)
+  }
+
+  "is enabled" should  "return false in case of environment is development and its disable" in {
+    when(environment.get("ENVIRONMENT")).thenReturn(Some("DEVELOPMENT"))
+    when(toggle.production).thenReturn(false)
+    when(toggle.development).thenReturn(false)
+    val manager = new ToggleManager(toggleConfig,environment)
+    manager.isEnabled(toggleName) should be (false)
+  }
+
+  "is enabled" should  "return true in case of environment is local and its enable" in {
+    when(environment.get("ENVIRONMENT")).thenReturn(Some("LOCAL"))
+    when(toggle.production).thenReturn(false)
+    when(toggle.local).thenReturn(true)
+    val manager = new ToggleManager(toggleConfig,environment)
+    manager.isEnabled(toggleName) should be (true)
+  }
+
+  "is enabled" should  "return false in case of environment is local and its disable" in {
+    when(environment.get("ENVIRONMENT")).thenReturn(Some("LOCAL"))
+    when(toggle.production).thenReturn(false)
+    when(toggle.local).thenReturn(false)
     val manager = new ToggleManager(toggleConfig,environment)
     manager.isEnabled(toggleName) should be (false)
   }
