@@ -17,7 +17,7 @@ class ToggleManager(toggles : Either[ConfigReaderFailures, ToggleInfo], environm
       return false
     val toggleConfig = toggles.right.get
     val environment = GetCurrentEnvironment(toggleConfig.environment)
-    if(environment.equals(None) || !IsToggleActive(toggleConfig.toggles, toggleName,environment.get))
+    if(environment.equals(None) || !IsToggleActive(toggleConfig.toggles, toggleName,environment.get.toUpperCase))
       return false
     return true
   }

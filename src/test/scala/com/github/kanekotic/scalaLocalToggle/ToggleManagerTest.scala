@@ -96,6 +96,14 @@ class ToggleManagerTest  extends FlatSpec with Matchers with MockitoSugar with B
     manager.isEnabled(toggleName) should be (true)
   }
 
+  "is enabled" should  "is not case sensitive" in {
+    when(environment.get("ENVIRONMENT")).thenReturn(Some("local"))
+    when(toggle.production).thenReturn(false)
+    when(toggle.local).thenReturn(true)
+    val manager = new ToggleManager(toggleConfig,environment)
+    manager.isEnabled(toggleName) should be (true)
+  }
+
   "is enabled" should  "return false in case of environment is local and its disable" in {
     when(environment.get("ENVIRONMENT")).thenReturn(Some("LOCAL"))
     when(toggle.production).thenReturn(false)
